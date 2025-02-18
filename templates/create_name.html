@@ -8,7 +8,29 @@
 </head>
 <body>
     <main>
-        
+        <section class= "container-names">
+            <div class="ContentName">
+                <h2 class="subtitleName"> Ingrese su nombre: </h2>
+                <input alt="ingrese un nombre: " class="inputNames" id="inputNames" min="2" />
+                <button class="btn-continue" id="CreateNames"> Crear </button>
+            </div>
+            <div class="listPerfil">
+                <h3 id="positionUser" class="subtitleName"> Jugadores </h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Puesto</th>
+                            <th> Nombre</th>
+                        </tr>
+                    </thead>
+                    <tbody id="namesTable">
+                        <!-- Ingreso de nombres -->
+                    </tbody>
+                </table>
+            <button class="btn-continue"><a> Continuar </a></button>
+            </div>
+        </section>
     </main>
 </body>
-</html>
+<script type="module" src="../modules/create_perfil.js"></script>
+</html> 

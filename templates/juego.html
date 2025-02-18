@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Escoger jugaodres </title>
+    <link  rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+    <main>
+        <section class ="content_words">
+            <h1 class="title">Juego de Palabras Aleatorias</h1>
+
+            <div id="random-word-container" class="random_word">Palabra Aleatoria: <span id="random-word" class="letterrandom"></span></div>
+
+            <input type="text" id="word-input" class="input_words" placeholder="Ingresa una palabra">
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Palabras Ingresadas</th>
+                </tr>
+            </thead>
+            <tbody id="word-list">
+                <!-- Las palabras ingresadas -->
+            </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+<script type="module" src="../modules/playword.js"></script>
+</html>
