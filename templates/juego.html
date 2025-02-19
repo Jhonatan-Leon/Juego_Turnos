@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Escoger jugaodres </title>
-    <link  rel="stylesheet" href="../style/style.css" />
+    <title>Juego de Palabras Aleatorias</title>
+    <link rel="stylesheet" href="../style/style.css" />
 </head>
 <body>
     <main>
-        <section class ="content_words">
-            <h1 class="title">Juego de Palabras Aleatorias</h1>
-
-            <div id="random-word-container" class="random_word">Palabra Aleatoria: <span id="random-word" class="letterrandom"></span></div>
-
-            <input type="text" id="word-input" class="input_words" placeholder="Ingresa una palabra">
-
+        <section class="containerJuego">
+            <h1 class="SubtitleJuego">En Juego</h1>
+            <div id="current-player">Turno de: <br><span id="player-name" class="playerName"></span></div>
+            <div id="random-word-container"><span id="random-word" class="letterrandom"></span></div>
+            <input type="text" id="word-input" placeholder="Ingresa una palabra">
             <table>
                 <thead>
-                <tr>
-                    <th>Palabras Ingresadas</th>
-                </tr>
-            </thead>
-            <tbody id="word-list">
-                <!-- Las palabras ingresadas -->
-            </tbody>
+                    <tr>
+                        <th>Palabras Ingresadas</th>
+                    </tr>
+                </thead>
+                <tbody id="word-list" >
+                    <!-- Las palabras ingresadas -->
+                </tbody>
             </table>
+            <button id="nextTurn">Siguiente Turno</button>
         </section>
     </main>
+    <script type="module" src="../modules/playword.js"></script>
 </body>
-<script type="module" src="../modules/playword.js"></script>
 </html>

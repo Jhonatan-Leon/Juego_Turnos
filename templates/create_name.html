@@ -3,34 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Apodos</title>
+    <title>Ingresar Nombres de Jugadores</title>
     <link rel="stylesheet" href="../style/style.css" />
 </head>
 <body>
     <main>
-        <section class= "container-names">
-            <div class="ContentName">
-                <h2 class="subtitleName"> Ingrese su nombre: </h2>
-                <input alt="ingrese un nombre: " class="inputNames" id="inputNames" min="2" />
-                <button class="btn-continue" id="CreateNames"> Crear </button>
-            </div>
-            <div class="listPerfil">
-                <h3 id="positionUser" class="subtitleName"> Jugadores </h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Puesto</th>
-                            <th> Nombre</th>
-                        </tr>
-                    </thead>
-                    <tbody id="namesTable">
-                        <!-- Ingreso de nombres -->
-                    </tbody>
-                </table>
-            <button class="btn-continue"><a> Continuar </a></button>
-            </div>
+        <section class="containerCreate">
+            <h1 class="titlePlayers">Ingrese los Nombres<br> de<br> los Jugadores</h1>
+            <input type="text" id="inputNames" placeholder="Nombre del Jugador">
+            <button id="CreateNames" class="CreateNames">Agregar Jugador</button>
+            <table id="namesTable" class="namesTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los nombres ingresados aparecerán aquí -->
+                </tbody>
+            </table>
+            <button id="startGame" class="btn-continue">Iniciar Juego</button>
         </section>
     </main>
+    <script type="module" src="../modules/create_perfil.js"></script>
 </body>
-<script type="module" src="../modules/create_perfil.js"></script>
-</html> 
+</html>
