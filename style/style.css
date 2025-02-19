@@ -321,7 +321,7 @@
 
 
     .winner {
-        background-color: yellow;
+        background: rgba(226, 226, 121, 0.582);
         color: black;
         font-weight: bold;
     }
