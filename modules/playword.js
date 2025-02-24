@@ -6,39 +6,47 @@ const nextTurnButton = document.getElementById("nextTurn");
 const timerDisplay = document.getElementById("timer");
 
 let timer;
-let timeLeft = 60; 
+let timeLeft = 60;
 let randomLetter;
 let currentPlayerIndex = 0;
 let players = [];
-let palabras = []; // Arreglo para almacenar las palabras de cada jugador
-const LIMITE = 5; // Límite de palabras a mostrar
+let palabras = []; 
+const LIMITE = 5; 
 
-// Recuperar los nombres de los jugadores desde localStorage
+// Recuperar jugadores desde localStorage
 function loadPlayers() {
-    const numPlayers = localStorage.getItem('numPlayers');
+    const numPlayers = parseInt(localStorage.getItem('numPlayers'), 10); 
+    if (!numPlayers || isNaN(numPlayers)) {
+        console.error("Error: numPlayers no es válido en localStorage");
+        return;
+    }
+
     for (let i = 0; i < numPlayers; i++) {
-        players.push(localStorage.getItem(`playerName${i}`));
-        palabras[i] = []; // Inicializar el arreglo de palabras para cada jugador
+        const playerName = localStorage.getItem(`playerName${i}`);
+        if (playerName) {
+            players.push(playerName);
+            // Iniciar el array de palabras para cada jugador
+            palabras[i] = []; 
+        } else {
+            console.warn(`Jugador ${i} no tiene nombre guardado.`);
+        }
     }
 }
 
-// Función para generar una letra aleatoria
+// Generar una letra aleatoria
 function generateRandomLetter() {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const randomIndex = Math.floor(Math.random() * letters.length);
+    randomLetter = letters[Math.floor(Math.random() * letters.length)];
 
-    randomLetter = letters[randomIndex];
     randomWordContainer.textContent = randomLetter;
-    // Habilitar el input
     wordInput.disabled = false;
-    
     startTimer();
     updateCurrentPlayer();
 }
 
-// Función para temporizador
+// Iniciar temporizador
 function startTimer() {
-    timeLeft = 60; 
+    timeLeft = 60;
     clearInterval(timer);
     timer = setInterval(() => {
         timeLeft--;
@@ -46,33 +54,37 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timer);
             alert("¡Se acabó el tiempo!");
-            // Bloquear input
-            wordInput.disabled = true; 
-            switchPlayer(); 
+            wordInput.disabled = true;
+            switchPlayer();
         }
     }, 1000);
 }
 
-// Función para agregar las palabras
+// Agregar palabra a la lista
 function addWordToList() {
-    const word = wordInput.value.trim();
-    if (word && word[0].toUpperCase() === randomLetter) {
-        palabras[currentPlayerIndex].push(word); // Almacenar la palabra en el arreglo del jugador actual
+    const word = wordInput.value.trim().toLowerCase(); 
+
+    if (!word) return;
+
+    if (word[0].toUpperCase() !== randomLetter) {
+        alert(`La palabra debe comenzar con la letra "${randomLetter}".`);
+    } else if (palabras[currentPlayerIndex].includes(word)) { 
+        //  Verificamos si el jugador ya usó esta palabra antes
+        alert(`Ya ingresaste la palabra "${word}" antes. Intenta con otra.`);
+    } else {
+        // Agregar palabra al jugador actual
+        palabras[currentPlayerIndex].push(word);
+
         if (palabras[currentPlayerIndex].length <= LIMITE) {
             const row = document.createElement("tr");
             const rowNew = document.createElement("td");
-
-            // Mostrar palabras
             rowNew.textContent = word;
             row.appendChild(rowNew);
             wordList.appendChild(row);
         }
-        // Limpiar el input
-        wordInput.value = ""; 
-    } else if (word) {
-        alert(`La palabra debe comenzar con la letra "${randomLetter}".`);
-        wordInput.value = ""; 
     }
+
+    wordInput.value = "";
 }
 
 wordInput.addEventListener("keypress", (event) => {
@@ -81,49 +93,52 @@ wordInput.addEventListener("keypress", (event) => {
     }
 });
 
-// Función para cambiar al siguiente jugador
+// Cambiar al siguiente jugador
 function switchPlayer() {
-    // Verificar si es el último jugador
     if (currentPlayerIndex === players.length - 1) {
-        // Si es el último jugador, finalizar el juego
-        finalizarJuego();
+        setTimeout(finalizarJuego, 1000);
     } else {
-        // Cambiar al siguiente jugador
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.length; 
-        // Limpiar palabras del jugador anterior
-        wordList.textContent = ""; 
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+        wordList.textContent = "";
         generateRandomLetter();
     }
-};
+}
 
-// Función para finalizar el juego y redirigir a la página de resultados
+// Finalizar el juego y redirigir
 function finalizarJuego() {
-    // Almacenar las palabras de cada jugador en localStorage
-    const numPlayers = localStorage.getItem('numPlayers');
-    for (let i = 0; i < numPlayers; i++) {
-        // Almacenar palabras en localStorage
-        const playerWords = JSON.stringify(palabras[i]); 
-        localStorage.setItem(`playerWords${i}`, playerWords); 
+    const numPlayers = parseInt(localStorage.getItem('numPlayers'), 10);
+    if (!numPlayers || isNaN(numPlayers)) {
+        console.error("Error: numPlayers no es válido al finalizar el juego.");
+        return;
     }
 
-    // Redirigir a la página de resultados
-    setInterval(() => {
-        window.location.href = '../templates/result.html';
-    }, 100);
+    for (let i = 0; i < numPlayers; i++) {
+        if (palabras[i]) {
+            localStorage.setItem(`playerWords${i}`, JSON.stringify(palabras[i]));
+        }
+    }
+
+    setTimeout(() => {
+        window.location.href = "../templates/result.html"; 
+    }, 500);
 }
 
-// Función para actualizar el nombre del jugador actual
+// Actualizar el nombre del jugador actual
 function updateCurrentPlayer() {
-    playerNameDisplay.textContent = players[currentPlayerIndex]; 
+    playerNameDisplay.textContent = players[currentPlayerIndex] || "Jugador desconocido";
 }
 
-// Generar una letra aleatoria al cargar la página
+
+// Cargar jugadores y empezar juego cuando la página carga
 window.onload = () => {
     loadPlayers();
-    generateRandomLetter();
-    updateCurrentPlayer(); 
+    if (players.length > 0) {
+        generateRandomLetter();
+        updateCurrentPlayer();
+    } else {
+        console.error("No hay jugadores cargados.");
+    }
 };
 
-nextTurnButton.addEventListener("click", () => {
-    switchPlayer();
-});
+// Evento para cambiar de turno
+nextTurnButton.addEventListener("click", switchPlayer);
